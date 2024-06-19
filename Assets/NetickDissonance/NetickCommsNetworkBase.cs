@@ -19,6 +19,7 @@ namespace Dissonance.Integrations.Netick
         public override unsafe void NetworkStart()
         {
             Sandbox.Events.OnDataReceived += OnDataReceived;
+            _instance = this;
         }
 
         public static void Initialize(NetickCommsNetwork instance)
@@ -40,6 +41,9 @@ namespace Dissonance.Integrations.Netick
             if (_commsNetworkInstance != instance)
                 throw new InvalidOperationException("Cannot send from mismatched instance");
 
+            if (_instance == null)
+                return;
+            Debug.Log("tryna send data to server");
             byte[] data = ConvertToArray(packet);
             
             if (reliable)
@@ -72,6 +76,7 @@ namespace Dissonance.Integrations.Netick
             for (int i = 0; i < length; i++)
                 rawData[i] = data[i];
 
+            Debug.Log("DATA WEOOOO");
             if (sandbox.IsServer)
             {
                 _commsNetworkInstance.DeliverMessageToServer(rawData, sender);
