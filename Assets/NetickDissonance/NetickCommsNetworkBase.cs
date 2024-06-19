@@ -43,7 +43,7 @@ namespace Dissonance.Integrations.Netick
 
             if (_instance == null)
                 return;
-            Debug.Log("tryna send data to server");
+
             byte[] data = ConvertToArray(packet);
             
             if (reliable)
@@ -76,7 +76,6 @@ namespace Dissonance.Integrations.Netick
             for (int i = 0; i < length; i++)
                 rawData[i] = data[i];
 
-            Debug.Log("DATA WEOOOO");
             if (sandbox.IsServer)
             {
                 _commsNetworkInstance.DeliverMessageToServer(rawData, sender);

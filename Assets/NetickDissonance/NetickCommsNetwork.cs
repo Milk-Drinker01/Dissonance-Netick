@@ -116,7 +116,6 @@ namespace Dissonance.Integrations.Netick
 
         internal void SendToServer(ArraySegment<byte> packet, bool reliable)
         {
-            Debug.Log("SEND TO SERVER");
             if (Server != null)
             {
                 _serverMessageQueue.Enqueue((
