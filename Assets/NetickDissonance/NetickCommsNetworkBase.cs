@@ -6,7 +6,7 @@ using Netick.Unity;
 using JetBrains.Annotations;
 using System;
 using Dissonance.Extensions;
-
+using NetworkPlayer = Netick.NetworkPlayer;
 namespace Dissonance.Integrations.Netick
 {
     public class NetickCommsNetworkBase : NetickBehaviour
@@ -19,7 +19,14 @@ namespace Dissonance.Integrations.Netick
         public override unsafe void NetworkStart()
         {
             Sandbox.Events.OnDataReceived += OnDataReceived;
+            Sandbox.Events.OnPlayerDisconnected += PlayerDisconnected;
             _instance = this;
+        }
+
+        private void PlayerDisconnected(NetworkSandbox sandbox, NetworkPlayer player, TransportDisconnectReason reason)
+        {
+            if (_commsNetworkInstance != null)
+                _commsNetworkInstance.NetickPlayerLeft(player);
         }
 
         public static void Initialize(NetickCommsNetwork instance)

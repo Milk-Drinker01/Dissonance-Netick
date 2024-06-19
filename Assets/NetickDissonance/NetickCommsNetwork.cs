@@ -171,5 +171,10 @@ namespace Dissonance.Integrations.Netick
         {
             _clientMessageQueue.Enqueue(new ArraySegment<byte>(data));
         }
+
+        public void NetickPlayerLeft(NetworkPlayer player)
+        {
+            Server?.ClientDisconnected(new NetickPeer(player, false));
+        }
     }
 }
