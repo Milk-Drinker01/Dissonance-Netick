@@ -8,7 +8,7 @@
 ## How to use:
 - Add the "dissonance comms" component to your network sandbox prefab
 - Add the "NetickCommsNetwork" component to your network sandbox prefab. this will also automatically add the "NetickCommsNetworkBase" component to your sandbox prefab.
-- Add a "voice receipt trigger" and "voice broadcast trigger" components to your network sandbox prefab, and set the desired chat room
+- Add the "voice receipt trigger" and "voice broadcast trigger" components to your network sandbox prefab, and set the desired chat room
 
 ## Issues:
 - Does not work with sandboxing or multi-server (due to the dissonance limit of having a singular Dissonance Comms object)
