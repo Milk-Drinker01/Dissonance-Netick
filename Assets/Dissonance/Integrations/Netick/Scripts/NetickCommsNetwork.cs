@@ -70,21 +70,21 @@ namespace Dissonance.Integrations.Netick
                     {
                         switch (netickBehavior.Sandbox.StartMode)
                         {
-                            case StartMode.Host:
+                            case NetickStartMode.Host:
                                 if (Mode != NetworkMode.Host)
                                 {
                                     NetickCommsNetworkBase.Initialize(this);
                                     RunAsHost(Unit.None, Unit.None);
                                 }
                                 break;
-                            case StartMode.Client:
+                            case NetickStartMode.Client:
                                 if (Mode != NetworkMode.Client)
                                 {
                                     NetickCommsNetworkBase.Initialize(this);
                                     RunAsClient(Unit.None);
                                 }
                                 break;
-                            case StartMode.Server:
+                            case NetickStartMode.Server:
                                 if (Mode != NetworkMode.DedicatedServer)
                                 {
                                     NetickCommsNetworkBase.Initialize(this);

@@ -6,6 +6,13 @@ namespace Netick.Samples.FPS
 {
     public class FPSController : NetworkBehaviour
     {
+        public struct FPSInput : INetworkInput
+        {
+            public Vector2 YawPitch;
+            public Vector2 Movement;
+            public NetworkBool ShootInput;
+        }
+
         [SerializeField]
         private float                _movementSpeed                = 10;
         [SerializeField]
@@ -49,6 +56,10 @@ namespace Netick.Samples.FPS
 
             var networkInput       = Sandbox.GetInput<FPSInput>();
             networkInput.YawPitch += input;
+
+            networkInput.Movement = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            networkInput.ShootInput |= Input.GetMouseButton(0);
+
             Sandbox.SetInput<FPSInput>(networkInput);
          
             // we apply the rotation in update too to have smooth camera control
@@ -74,6 +85,7 @@ namespace Netick.Samples.FPS
 
             var gravity  = 15f * Vector3.down;
 
+            Debug.Log(movement);
             // move
             _CC.Move((movement + gravity) * Sandbox.FixedDeltaTime);
         }

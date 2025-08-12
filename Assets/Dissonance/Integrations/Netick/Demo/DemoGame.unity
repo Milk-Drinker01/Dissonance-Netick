@@ -162,6 +162,11 @@ MonoBehaviour:
   AutoConnect: 0
   Port: 7350
   ServerIPAddress: 127.0.0.1
+  Cap: 1
+  FPS: 450
+  ShowDisconnectButton: 1
+  ShowConnectButton: 1
+  Offset: {x: 36, y: 0}
 --- !u!4 &103032907
 Transform:
   m_ObjectHideFlags: 0
@@ -186,11 +191,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 103032905}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb5a4e3a1e885b04e8f36bf0b0597274, type: 3}
+  m_Script: {fileID: 11500000, guid: 13d95c28de1bac54f8b26fc8dd960077, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpawnPos: {fileID: 103032907}
   PlayerPrefab: {fileID: 7011933354638177272, guid: d66d5a97430d3364890108321123b309, type: 3}
+  SpawnPosition: {fileID: 103032907}
+  HorizontalOffset: 5
+  StaggerSpawns: 1
+  DestroyPlayerObjectWhenLeaving: 0
 --- !u!1 &497028979
 GameObject:
   m_ObjectHideFlags: 0
