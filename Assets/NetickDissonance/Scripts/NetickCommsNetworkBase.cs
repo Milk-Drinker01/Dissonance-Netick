@@ -7,20 +7,65 @@ using JetBrains.Annotations;
 using System;
 using Dissonance.Extensions;
 using NetworkPlayer = Netick.NetworkPlayer;
+using Dissonance.Networking;
+using System.Threading;
 namespace Dissonance.Integrations.Netick
 {
     public class NetickCommsNetworkBase : NetickBehaviour
     {
         const int VoiceDataID = 0;
 
+        public static List<NetickProximityChat> AllUnregisteredProxChats;
         private static NetickCommsNetworkBase _instance;
         private static NetickCommsNetwork _commsNetworkInstance;
+        private static bool Started = false;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void Reset()
+        {
+            ResetAll();
+        }
+
+        static void ResetAll()
+        {
+            AllUnregisteredProxChats = new List<NetickProximityChat>();
+            _instance = null;
+            _commsNetworkInstance = null;
+            Started = false;
+        }
+
+        private void Awake()
+        {
+            //GetComponent<DissonanceComms>().enabled = false;
+        }
+
+        private void OnDestroy()
+        {
+            ResetAll();
+        }
 
         public override unsafe void NetworkStart()
         {
+            GetComponent<DissonanceComms>().LocalPlayerName = Sandbox.LocalPlayer.PlayerId.ToString();
+            GetComponent<DissonanceComms>().enabled = true;
+            GetComponent<VoiceBroadcastTrigger>().enabled = true;
+            GetComponent<VoiceReceiptTrigger>().enabled = true;
+            GetComponent<VoiceProximityBroadcastTrigger>().enabled = true;
+            GetComponent<VoiceProximityReceiptTrigger>().enabled = true;
+
             Sandbox.Events.OnDataReceived += OnDataReceived;
             Sandbox.Events.OnPlayerDisconnected += PlayerDisconnected;
             _instance = this;
+        }
+
+        public static bool CheckDissonanceStarted(NetickProximityChat chat)
+        {
+            if (!Started)
+            {
+                AllUnregisteredProxChats.Add(chat);
+                return false;
+            }
+            return true;
         }
 
         private void PlayerDisconnected(NetworkSandbox sandbox, NetworkPlayer player, TransportDisconnectReason reason)
@@ -32,6 +77,20 @@ namespace Dissonance.Integrations.Netick
         public static void Initialize(NetickCommsNetwork instance)
         {
             _commsNetworkInstance = instance;
+            Started = true;
+            RegisterWaitingClients();
+        }
+
+        static void RegisterWaitingClients()
+        {
+            foreach (NetickProximityChat chat in AllUnregisteredProxChats)
+                chat.StartTracking();
+            AllUnregisteredProxChats.Clear();
+        }
+
+        public static void Stopped()
+        {
+
         }
 
         [NotNull]

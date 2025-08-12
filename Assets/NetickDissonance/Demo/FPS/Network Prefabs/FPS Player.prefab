@@ -160,6 +160,7 @@ GameObject:
   - component: {fileID: 3197551385548652812}
   - component: {fileID: 6851739389618402669}
   - component: {fileID: 1417749684482701243}
+  - component: {fileID: -6287787114282369192}
   m_Layer: 0
   m_Name: FPS Player
   m_TagString: Untagged
@@ -265,3 +266,15 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-6287787114282369192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7011933354638177272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09e449be41f132f4c834236816814a3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

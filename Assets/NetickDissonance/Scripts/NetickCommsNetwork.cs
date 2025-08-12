@@ -34,6 +34,13 @@ namespace Dissonance.Integrations.Netick
 
         protected override void Update()
         {
+            CheckRunningMode();
+
+            base.Update();
+        }
+
+        private void CheckRunningMode()
+        {
             if (IsInitialized)
             {
                 if (!netickBehavior)
@@ -41,8 +48,7 @@ namespace Dissonance.Integrations.Netick
 
                 if (netickBehavior == null)
                 {
-                    TryGetComponent<NetickCommsNetworkBase>(out netickBehavior);
-                    if (netickBehavior == null)
+                    if (!TryGetComponent<NetickCommsNetworkBase>(out netickBehavior))
                     {
                         if (!_sentNetworkRunnerWarning)
                         {
@@ -58,6 +64,7 @@ namespace Dissonance.Integrations.Netick
                     {
                         if (Mode != NetworkMode.None)
                             Stop();
+                        NetickCommsNetworkBase.Stopped();
                     }
                     else
                     {
@@ -88,8 +95,6 @@ namespace Dissonance.Integrations.Netick
                     }
                 }
             }
-
-            base.Update();
         }
 
         internal void ReadClientMessages(NetickClient client)
