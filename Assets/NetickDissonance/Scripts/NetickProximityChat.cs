@@ -10,8 +10,6 @@ namespace Dissonance
 {
     public class NetickProximityChat : NetworkBehaviour, IDissonancePlayer
     {
-        //[Networked] public NetworkString8 PlayerID { get; set; }
-
         private DissonanceComms _dissonanceComms;
 
         #region IDissonancePlayer Interface
@@ -37,13 +35,10 @@ namespace Dissonance
                 Debug.LogError("did not have DissonanceComms component on sandbox prefab.");
                 return;
             }
-
-            _playerID = InputSource.PlayerId.ToString();
+            
+            _playerID = InputSourcePlayerId.ToString();
             if (NetickCommsNetworkBase.CheckDissonanceStarted(this))
                 StartTracking();
-
-            //if (IsServer)
-            //    PlayerID = InputSource.PlayerId.ToString();
         }
 
         public override void NetworkDestroy()
@@ -51,13 +46,6 @@ namespace Dissonance
             if (IsTracking)
                 StopTracking();
         }
-
-        //[OnChanged(nameof(PlayerID))]
-        //private void OnPlayerIDSet(OnChangedData onChangedData)
-        //{
-        //    if (NetickCommsNetworkBase.CheckDissonanceStarted(this))
-        //        StartTracking();
-        //}
 
         public void StartTracking()
         {
