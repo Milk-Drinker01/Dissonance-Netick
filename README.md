@@ -10,7 +10,7 @@
 - Add the "Dissonance Comms" component to your network sandbox prefab. Disable it.
 - Add the "NetickCommsNetwork" component to your network sandbox prefab. This will also automatically add the "NetickCommsNetworkBase" component to your sandbox prefab.
 - Global Voice Chat: Add the "Voice receipt trigger" and "Voice broadcast trigger" components to your network sandbox prefab. Disable both of these components. Set the desired chat room
-- Proximity Voice Chat: Add the Voice Proximty Broadcast and receipt triggers to your sandbox prefab. Disable both of these components. set the desired chat room.
+- Proximity Voice Chat: Add the Voice Proximty Broadcast and receipt triggers to your sandbox prefab. Disable both of these components. set the desired chat room. Add the "Netick Proximity Chat" component to your player prefab.
 
 ## Demo Scene:
 - Hold V to transmit Proximity voice chat
