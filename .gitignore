@@ -11,7 +11,12 @@
 /[Uu]ser[Ss]ettings/
 
 Assets/Netick/*
+Assets/Netick.meta
+Assets/Plugins.meta
+
 Assets/Plugins/Dissonance/*
+
+/[Aa]ssets/Plugins**
 
 /[Aa]ssets/Plugins/Dissonance/**
 /[Aa]ssets/Plugins/Dissonance.meta
