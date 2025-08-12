@@ -11,8 +11,20 @@
 /[Uu]ser[Ss]ettings/
 
 Assets/Netick/*
-Assets/Dissonance/*
 Assets/Plugins/Dissonance/*
+
+/[Aa]ssets/Plugins/Dissonance/**
+/[Aa]ssets/Plugins/Dissonance.meta
+/[Aa]ssets/Dissonance/Core/**
+/[Aa]ssets/Dissonance/Core.meta
+/[Aa]ssets/Dissonance/PreprocessorTestScene
+/[Aa]ssets/Dissonance/PreprocessorTestScene.meta
+/[Aa]ssets/Dissonance/changelog.txt
+/[Aa]ssets/Dissonance/changelog.txt.meta
+/[Aa]ssets/Dissonance/Offline Documentation~.zip
+/[Aa]ssets/Dissonance/Offline Documentation~.zip.meta
+/[Aa]ssets/Dissonance/Readme.txt
+/[Aa]ssets/Dissonance/Readme.txt.meta
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
