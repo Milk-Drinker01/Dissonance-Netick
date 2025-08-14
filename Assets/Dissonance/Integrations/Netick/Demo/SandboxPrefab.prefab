@@ -9,13 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8577280330254483881}
-  - component: {fileID: 5136703401101377712}
   - component: {fileID: 7986259892223467548}
-  - component: {fileID: 1221332487183404563}
-  - component: {fileID: 1993456796284311281}
-  - component: {fileID: 2768818664263206806}
-  - component: {fileID: 8817096078556905092}
-  - component: {fileID: 8297779330856832823}
   m_Layer: 0
   m_Name: SandboxPrefab
   m_TagString: Untagged
@@ -38,28 +32,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5136703401101377712
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8014153010971201975}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8cb4dc319de88dc4cb76c47aafb46b1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _lastPrefabError: 
-  _isMuted: 0
-  _isDeafened: 0
-  _oneMinusBaseRemoteVoiceVolume: 0
-  _playbackPrefab: {fileID: 0}
-  _playbackPrefab2: {fileID: 1000010352696724, guid: 41bbbf1a8ee37a3479d8c133579965e3, type: 3}
-  _micName: 
-  _playerPriority: 0
-  _tokens:
-    _tokens: []
 --- !u!114 &7986259892223467548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,115 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4782ac1497e257479680066b4cd52fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1221332487183404563
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8014153010971201975}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 451e7fecb4b000d408d9157fad5710ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1993456796284311281
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8014153010971201975}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a76c0688e4bd80499ffa3b6a2aed3f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _tokens:
-    _tokens: []
-  _range: 10
-  _roomName: Proximity
-  _useTrigger: 0
-  _roomExpanded: 1
-  _metadataExpanded: 1
-  _activationModeExpanded: 1
-  _tokensExpanded: 0
-  _inputName: Proximity Chat
-  _mode: 2
-  _muted: 0
-  _prority: 0
---- !u!114 &2768818664263206806
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8014153010971201975}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ced1b68963272494b9b3d3bed1584a33, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _tokens:
-    _tokens: []
-  _range: 10
-  _roomName: Proximity
-  _useTrigger: 0
-  _roomExpanded: 1
-  _tokensExpanded: 0
-  _colliderExpanded: 0
---- !u!114 &8817096078556905092
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8014153010971201975}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a066ddbf125f9546bcadc947418566b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _tokens:
-    _tokens: []
-  _channelTypeExpanded: 1
-  _metadataExpanded: 0
-  _activationModeExpanded: 1
-  _tokensExpanded: 0
-  _ampExpanded: 1
-  _activationFaderSettings:
-    _volume: 1
-    _fadeInTicks: 0
-    _fadeOutTicks: 1500000
-  _triggerFaderSettings:
-    _volume: 1
-    _fadeInTicks: 7500000
-    _fadeOutTicks: 11500000
-  _broadcastPosition: 1
-  _channelType: 0
-  _inputName: Global Chat
-  _mode: 2
-  _muted: 0
-  _playerId: 
-  _useTrigger: 0
-  _roomName: Global
-  _priority: -2
---- !u!114 &8297779330856832823
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8014153010971201975}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3737438748cf23f448d18cd2c6192e95, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _tokens:
-    _tokens: []
-  _roomExpanded: 1
-  _tokensExpanded: 0
-  _colliderExpanded: 0
-  _roomName: Global
-  _useTrigger: 0
+  DissonancePrefab: {fileID: 8014153010971201975, guid: 2774c2199393c6c4180e2dd2463741e1, type: 3}

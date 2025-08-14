@@ -10,8 +10,6 @@ namespace Dissonance
 {
     public class NetickProximityChat : NetworkBehaviour, IDissonancePlayer
     {
-        private DissonanceComms _dissonanceComms;
-
         #region IDissonancePlayer Interface
         public string PlayerId => _playerID;
         private string _playerID;
@@ -26,16 +24,8 @@ namespace Dissonance
         private bool _isTracking;
         #endregion
 
-        protected internal DissonanceComms Comms;
-
         public override void NetworkStart()
         {
-            if (!Sandbox.TryGetComponent<DissonanceComms>(out _dissonanceComms))
-            {
-                Debug.LogError("did not have DissonanceComms component on sandbox prefab.");
-                return;
-            }
-            
             _playerID = InputSourcePlayerId.ToString();
             if (NetickCommsNetworkBase.CheckDissonanceStarted(this))
                 StartTracking();
@@ -56,7 +46,8 @@ namespace Dissonance
                 Debug.Log("cannot stop tracking if you are already tracking!");
 
             //UnityEngine.Debug.Log("adding tracker");
-            _dissonanceComms.TrackPlayerPosition(this);
+            NetickCommsNetworkBase.CommsInstance.TrackPlayerPosition(this);
+            NetickCommsNetworkBase.AllRegisteredProxChats.Add(this);
             _isTracking = true;
         }
 
@@ -65,9 +56,9 @@ namespace Dissonance
             if (!IsTracking)
                 Debug.Log("cannot stop tracking if you are not tracking!");
 
-            if (_dissonanceComms != null)
+            if (NetickCommsNetworkBase.CommsInstance != null)
             {
-                _dissonanceComms.StopTracking(this);
+                NetickCommsNetworkBase.CommsInstance.StopTracking(this);
                 _isTracking = false;
             }
         }

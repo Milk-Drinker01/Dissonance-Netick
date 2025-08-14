@@ -6,19 +6,25 @@ using Netick.Unity;
 using JetBrains.Annotations;
 using System;
 using Dissonance.Extensions;
-using NetworkPlayer = Netick.NetworkPlayer;
-using Dissonance.Networking;
-using System.Threading;
+
 namespace Dissonance.Integrations.Netick
 {
     public class NetickCommsNetworkBase : NetickBehaviour
     {
         const int VoiceDataID = 0;
 
+        public static NetickCommsNetworkBase instance;
+        public static DissonanceComms CommsInstance;
+
+        public static List<NetickProximityChat> AllRegisteredProxChats;
         public static List<NetickProximityChat> AllUnregisteredProxChats;
-        private static NetickCommsNetworkBase _instance;
+        
         private static NetickCommsNetwork _commsNetworkInstance;
         private static bool Started = false;
+        private static GameObject dissonancePrefabInstance;
+
+
+        public GameObject DissonancePrefab;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void Reset()
@@ -26,11 +32,23 @@ namespace Dissonance.Integrations.Netick
             ResetAll();
         }
 
-        static void ResetAll()
+        static void ResetAll()  //we reset everything on game startup, and on disconnect
         {
-            AllUnregisteredProxChats = new List<NetickProximityChat>();
-            _instance = null;
+            instance = null;
             _commsNetworkInstance = null;
+
+            AllRegisteredProxChats = new List<NetickProximityChat>();
+            AllUnregisteredProxChats = new List<NetickProximityChat>();
+
+            ResetWhenDestroyInstance();
+        }
+
+        static void ResetWhenDestroyInstance()  //we need to respawn the dissonance instance when switching scenes, cause it doesnt like long pauses
+        {
+            foreach (NetickProximityChat chat in AllRegisteredProxChats)
+                AllUnregisteredProxChats.Add(chat);
+            AllRegisteredProxChats = new List<NetickProximityChat>();
+
             Started = false;
         }
 
@@ -41,21 +59,41 @@ namespace Dissonance.Integrations.Netick
 
         private void OnDestroy()
         {
+            DestroyDissoananceInstance();
             ResetAll();
         }
 
         public override unsafe void NetworkStart()
         {
-            GetComponent<DissonanceComms>().LocalPlayerName = Sandbox.LocalPlayer.PlayerId.ToString();
-            GetComponent<DissonanceComms>().enabled = true;
-            GetComponent<VoiceBroadcastTrigger>().enabled = true;
-            GetComponent<VoiceReceiptTrigger>().enabled = true;
-            GetComponent<VoiceProximityBroadcastTrigger>().enabled = true;
-            GetComponent<VoiceProximityReceiptTrigger>().enabled = true;
-
             Sandbox.Events.OnDataReceived += OnDataReceived;
-            Sandbox.Events.OnPlayerDisconnected += PlayerDisconnected;
-            _instance = this;
+            Sandbox.Events.OnPlayerLeft += PlayerDisconnected;
+            instance = this;
+
+            SpawnDissonanceObject();
+        }
+
+        [ContextMenu("Debug Restart Dissonance")]
+        public void SpawnDissonanceObject()
+        {
+            DestroyDissoananceInstance();
+            dissonancePrefabInstance = Instantiate(DissonancePrefab);
+            DontDestroyOnLoad(dissonancePrefabInstance);
+            CommsInstance = dissonancePrefabInstance.GetComponent<DissonanceComms>();
+
+            CommsInstance.LocalPlayerName = Sandbox.LocalPlayer.PlayerId.ToString();
+            CommsInstance.enabled = true;
+            dissonancePrefabInstance.GetComponent<VoiceBroadcastTrigger>().enabled = true;
+            dissonancePrefabInstance.GetComponent<VoiceReceiptTrigger>().enabled = true;
+            dissonancePrefabInstance.GetComponent<VoiceProximityBroadcastTrigger>().enabled = true;
+            dissonancePrefabInstance.GetComponent<VoiceProximityReceiptTrigger>().enabled = true;
+        }
+
+        [ContextMenu("Debug Stop Dissonance")]
+        public void DestroyDissoananceInstance()
+        {
+            if (dissonancePrefabInstance != null)
+                Destroy(dissonancePrefabInstance);
+            ResetWhenDestroyInstance();
         }
 
         public static bool CheckDissonanceStarted(NetickProximityChat chat)
@@ -66,12 +104,6 @@ namespace Dissonance.Integrations.Netick
                 return false;
             }
             return true;
-        }
-
-        private void PlayerDisconnected(NetworkSandbox sandbox, NetworkPlayer player, TransportDisconnectReason reason)
-        {
-            if (_commsNetworkInstance != null)
-                _commsNetworkInstance.NetickPlayerLeft(player);
         }
 
         public static void Initialize(NetickCommsNetwork instance)
@@ -93,6 +125,14 @@ namespace Dissonance.Integrations.Netick
 
         }
 
+        private void PlayerDisconnected(NetworkSandbox sandbox, NetworkPlayerId player)
+        {
+            if (!sandbox.IsServer)
+                return; 
+            if (_commsNetworkInstance != null)
+                _commsNetworkInstance.NetickPlayerLeft(sandbox.GetPlayerById(player));
+        }
+
         [NotNull]
         private static T[] ConvertToArray<T>(ArraySegment<T> segment)
             where T : struct
@@ -107,15 +147,15 @@ namespace Dissonance.Integrations.Netick
             if (_commsNetworkInstance != instance)
                 throw new InvalidOperationException("Cannot send from mismatched instance");
 
-            if (_instance == null)
+            if (NetickCommsNetworkBase.instance == null)
                 return;
 
             byte[] data = ConvertToArray(packet);
             
             if (reliable)
-                _instance.Sandbox.ConnectedServer.SendData(VoiceDataID, data, data.Length, TransportDeliveryMethod.Reliable);
+                NetickCommsNetworkBase.instance.Sandbox.ConnectedServer.SendData(VoiceDataID, data, data.Length, TransportDeliveryMethod.Reliable);
             else
-                _instance.Sandbox.ConnectedServer.SendData(VoiceDataID, data, data.Length, TransportDeliveryMethod.Unreliable);
+                NetickCommsNetworkBase.instance.Sandbox.ConnectedServer.SendData(VoiceDataID, data, data.Length, TransportDeliveryMethod.Unreliable);
         }
 
         public static bool SendToClient(NetickCommsNetwork instance, NetickPeer dest, ArraySegment<byte> packet, bool reliable)

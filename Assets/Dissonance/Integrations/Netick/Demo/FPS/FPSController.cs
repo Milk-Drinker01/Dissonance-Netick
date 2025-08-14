@@ -85,7 +85,6 @@ namespace Netick.Samples.FPS
 
             var gravity  = 15f * Vector3.down;
 
-            Debug.Log(movement);
             // move
             _CC.Move((movement + gravity) * Sandbox.FixedDeltaTime);
         }

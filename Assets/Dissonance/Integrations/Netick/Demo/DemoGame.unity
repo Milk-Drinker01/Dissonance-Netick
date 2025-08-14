@@ -198,7 +198,7 @@ MonoBehaviour:
   SpawnPosition: {fileID: 103032907}
   HorizontalOffset: 5
   StaggerSpawns: 1
-  DestroyPlayerObjectWhenLeaving: 0
+  DestroyPlayerObjectWhenLeaving: 1
 --- !u!1 &497028979
 GameObject:
   m_ObjectHideFlags: 0

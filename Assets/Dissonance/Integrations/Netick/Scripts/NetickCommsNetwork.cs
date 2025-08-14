@@ -11,12 +11,9 @@ using NetworkPlayer = Netick.NetworkPlayer;
 
 namespace Dissonance.Integrations.Netick
 {
-    [RequireComponent(typeof(NetickCommsNetworkBase))]
     public class NetickCommsNetwork : BaseCommsNetwork<NetickServer, NetickClient, NetickPeer, Unit, Unit>
     {
         private bool _sentNetworkRunnerWarning;
-
-        private NetickCommsNetworkBase netickBehavior;
 
         private readonly Queue<byte[]> _byteArrayPool = new Queue<byte[]>();
         private readonly Queue<(NetickPeer, ArraySegment<byte>)> _serverMessageQueue = new Queue<(NetickPeer, ArraySegment<byte>)>();
@@ -43,55 +40,37 @@ namespace Dissonance.Integrations.Netick
         {
             if (IsInitialized)
             {
-                if (!netickBehavior)
-                    netickBehavior = null;
-
-                if (netickBehavior == null)
+                if (!NetickCommsNetworkBase.instance.Sandbox.IsRunning)
                 {
-                    if (!TryGetComponent<NetickCommsNetworkBase>(out netickBehavior))
-                    {
-                        if (!_sentNetworkRunnerWarning)
-                        {
-                            _sentNetworkRunnerWarning = true;
-                            Log.Warn("`NetickCommsNetwork` not attached to `NetworkSandbox`");
-                        }
-                    }
+                    if (Mode != NetworkMode.None)
+                        Stop();
+                    NetickCommsNetworkBase.Stopped();
                 }
-
-                if (netickBehavior != null)
+                else
                 {
-                    if (!netickBehavior.Sandbox.IsRunning)
+                    switch (NetickCommsNetworkBase.instance.Sandbox.StartMode)
                     {
-                        if (Mode != NetworkMode.None)
-                            Stop();
-                        NetickCommsNetworkBase.Stopped();
-                    }
-                    else
-                    {
-                        switch (netickBehavior.Sandbox.StartMode)
-                        {
-                            case NetickStartMode.Host:
-                                if (Mode != NetworkMode.Host)
-                                {
-                                    NetickCommsNetworkBase.Initialize(this);
-                                    RunAsHost(Unit.None, Unit.None);
-                                }
-                                break;
-                            case NetickStartMode.Client:
-                                if (Mode != NetworkMode.Client)
-                                {
-                                    NetickCommsNetworkBase.Initialize(this);
-                                    RunAsClient(Unit.None);
-                                }
-                                break;
-                            case NetickStartMode.Server:
-                                if (Mode != NetworkMode.DedicatedServer)
-                                {
-                                    NetickCommsNetworkBase.Initialize(this);
-                                    RunAsDedicatedServer(Unit.None);
-                                }
-                                break;
-                        }
+                        case NetickStartMode.Host:
+                            if (Mode != NetworkMode.Host)
+                            {
+                                NetickCommsNetworkBase.Initialize(this);
+                                RunAsHost(Unit.None, Unit.None);
+                            }
+                            break;
+                        case NetickStartMode.Client:
+                            if (Mode != NetworkMode.Client)
+                            {
+                                NetickCommsNetworkBase.Initialize(this);
+                                RunAsClient(Unit.None);
+                            }
+                            break;
+                        case NetickStartMode.Server:
+                            if (Mode != NetworkMode.DedicatedServer)
+                            {
+                                NetickCommsNetworkBase.Initialize(this);
+                                RunAsDedicatedServer(Unit.None);
+                            }
+                            break;
                     }
                 }
             }
@@ -124,7 +103,7 @@ namespace Dissonance.Integrations.Netick
             if (Server != null)
             {
                 _serverMessageQueue.Enqueue((
-                    new NetickPeer(netickBehavior.Sandbox.LocalPlayer, true),
+                    new NetickPeer(NetickCommsNetworkBase.instance.Sandbox.LocalPlayer, true),
                     CopyForLoopback(packet)
                 ));
             }
