@@ -40,34 +40,34 @@ namespace Dissonance.Integrations.Netick
         {
             if (IsInitialized)
             {
-                if (!NetickCommsNetworkBase.instance.Sandbox.IsRunning)
+                if (!NetickDissonanceManager.instance.Sandbox.IsRunning)
                 {
                     if (Mode != NetworkMode.None)
                         Stop();
-                    NetickCommsNetworkBase.Stopped();
+                    NetickDissonanceManager.Stopped();
                 }
                 else
                 {
-                    switch (NetickCommsNetworkBase.instance.Sandbox.StartMode)
+                    switch (NetickDissonanceManager.instance.Sandbox.StartMode)
                     {
                         case NetickStartMode.Host:
                             if (Mode != NetworkMode.Host)
                             {
-                                NetickCommsNetworkBase.Initialize(this);
+                                NetickDissonanceManager.Initialize(this);
                                 RunAsHost(Unit.None, Unit.None);
                             }
                             break;
                         case NetickStartMode.Client:
                             if (Mode != NetworkMode.Client)
                             {
-                                NetickCommsNetworkBase.Initialize(this);
+                                NetickDissonanceManager.Initialize(this);
                                 RunAsClient(Unit.None);
                             }
                             break;
                         case NetickStartMode.Server:
                             if (Mode != NetworkMode.DedicatedServer)
                             {
-                                NetickCommsNetworkBase.Initialize(this);
+                                NetickDissonanceManager.Initialize(this);
                                 RunAsDedicatedServer(Unit.None);
                             }
                             break;
@@ -103,13 +103,13 @@ namespace Dissonance.Integrations.Netick
             if (Server != null)
             {
                 _serverMessageQueue.Enqueue((
-                    new NetickPeer(NetickCommsNetworkBase.instance.Sandbox.LocalPlayer, true),
+                    new NetickPeer(NetickDissonanceManager.instance.Sandbox.LocalPlayer, true),
                     CopyForLoopback(packet)
                 ));
             }
             else
             {
-                NetickCommsNetworkBase.SendToServer(this, packet, reliable);
+                NetickDissonanceManager.SendToServer(this, packet, reliable);
             }
         }
 
@@ -121,7 +121,7 @@ namespace Dissonance.Integrations.Netick
             }
             else
             {
-                if (!NetickCommsNetworkBase.SendToClient(this, dest, packet, reliable))
+                if (!NetickDissonanceManager.SendToClient(this, dest, packet, reliable))
                     Server?.ClientDisconnected(dest);
             }
         }

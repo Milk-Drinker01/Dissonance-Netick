@@ -9,11 +9,11 @@ using Dissonance.Extensions;
 
 namespace Dissonance.Integrations.Netick
 {
-    public class NetickCommsNetworkBase : NetickBehaviour
+    public class NetickDissonanceManager : NetickBehaviour
     {
         const int VoiceDataID = 0;
 
-        public static NetickCommsNetworkBase instance;
+        public static NetickDissonanceManager instance;
         public static DissonanceComms CommsInstance;
 
         public static List<NetickProximityChat> AllRegisteredProxChats;
@@ -147,15 +147,15 @@ namespace Dissonance.Integrations.Netick
             if (_commsNetworkInstance != instance)
                 throw new InvalidOperationException("Cannot send from mismatched instance");
 
-            if (NetickCommsNetworkBase.instance == null)
+            if (NetickDissonanceManager.instance == null)
                 return;
 
             byte[] data = ConvertToArray(packet);
             
             if (reliable)
-                NetickCommsNetworkBase.instance.Sandbox.ConnectedServer.SendData(VoiceDataID, data, data.Length, TransportDeliveryMethod.Reliable);
+                NetickDissonanceManager.instance.Sandbox.ConnectedServer.SendData(VoiceDataID, data, data.Length, TransportDeliveryMethod.Reliable);
             else
-                NetickCommsNetworkBase.instance.Sandbox.ConnectedServer.SendData(VoiceDataID, data, data.Length, TransportDeliveryMethod.Unreliable);
+                NetickDissonanceManager.instance.Sandbox.ConnectedServer.SendData(VoiceDataID, data, data.Length, TransportDeliveryMethod.Unreliable);
         }
 
         public static bool SendToClient(NetickCommsNetwork instance, NetickPeer dest, ArraySegment<byte> packet, bool reliable)

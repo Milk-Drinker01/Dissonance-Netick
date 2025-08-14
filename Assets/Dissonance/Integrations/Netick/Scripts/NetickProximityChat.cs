@@ -27,7 +27,7 @@ namespace Dissonance
         public override void NetworkStart()
         {
             _playerID = InputSourcePlayerId.ToString();
-            if (NetickCommsNetworkBase.CheckDissonanceStarted(this))
+            if (NetickDissonanceManager.CheckDissonanceStarted(this))
                 StartTracking();
         }
 
@@ -46,8 +46,8 @@ namespace Dissonance
                 Debug.Log("cannot stop tracking if you are already tracking!");
 
             //UnityEngine.Debug.Log("adding tracker");
-            NetickCommsNetworkBase.CommsInstance.TrackPlayerPosition(this);
-            NetickCommsNetworkBase.AllRegisteredProxChats.Add(this);
+            NetickDissonanceManager.CommsInstance.TrackPlayerPosition(this);
+            NetickDissonanceManager.AllRegisteredProxChats.Add(this);
             _isTracking = true;
         }
 
@@ -56,9 +56,9 @@ namespace Dissonance
             if (!IsTracking)
                 Debug.Log("cannot stop tracking if you are not tracking!");
 
-            if (NetickCommsNetworkBase.CommsInstance != null)
+            if (NetickDissonanceManager.CommsInstance != null)
             {
-                NetickCommsNetworkBase.CommsInstance.StopTracking(this);
+                NetickDissonanceManager.CommsInstance.StopTracking(this);
                 _isTracking = false;
             }
         }
